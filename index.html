@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B737 Technical Manuals</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .portal-box {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 560px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Top Bar: Logo on Left, CUST Dropdown on Right */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 22px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #334155;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Styling for Boeing text or optional SVG/PNG logo */
+    .boeing-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      font-style: italic;
+    }
+
+    .cust-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cust-selector label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94a3b8;
+      letter-spacing: 0.8px;
+    }
+
+    select {
+      background-color: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    select:focus, select:hover {
+      border-color: #38bdf8;
+    }
+
+    /* Fleet Rows */
+    .fleet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .fleet-row {
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .fleet-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .manual-btn {
+      background-color: #0284c7;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: 1px solid #0369a1;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      text-align: center;
+      min-width: 84px;
+    }
+
+    .manual-btn:hover {
+      background-color: #0369a1;
+      transform: translateY(-2px);
+    }
+
+    .manual-btn:active {
+      transform: translateY(0);
+    }
+
+    .manual-btn.disabled {
+      background-color: #334155;
+      border-color: #475569;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    @media (max-width: 420px) {
+      .fleet-row {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .btn-group {
+        justify-content: center;
+      }
+      .manual-btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="portal-box">
+    <!-- Top Header: Logo & Airline Dropdown -->
+    <div class="header">
+      <div class="logo-area">
+        <!-- You can replace this span with an <img src="boeing-logo.png" height="28"> if you upload a logo file -->
+        <img src="boeing-logo.png" height="70">
+      </div>
+
+      <div class="cust-selector">
+        <label for="airlineSelect">CUST</label>
+        <select id="airlineSelect" onchange="updateLinks()">
+          <option value="OMA">OMA</option>
+          <!-- Add more airlines here in the future -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Aircraft Rows -->
+    <div class="fleet-list">
+      <!-- B73M Row -->
+      <div class="fleet-row">
+        <span class="fleet-title">B73M</span>
+        <div class="btn-group">
+          <a id="b73m-amm" href="#" class="manual-btn">AMM</a>
+          <a id="b73m-ifim" href="#" class="manual-btn">IFIM</a>
+        </div>
+      </div>
+
+      <!-- B737 Row -->
+      <div class="fleet-row">
+        <span class="fleet-title">B737</span>
+        <div class="btn-group">
+          <a id="b737-amm" href="#" class="manual-btn">AMM</a>
+          <a id="b737-fim" href="#" class="manual-btn">FIM</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configure your GitHub Pages URLs for each airline here
+    const airlineLinks = {
+      AIX: {
+        b73m_amm: "https://YOUR-USERNAME.github.io/YOUR-AMM-REPO/",
+        b73m_ifim: "https://YOUR-USERNAME.github.io/YOUR-IFIM-REPO/",
+        b737_amm: "", // Leave empty ("") if not uploaded yet; button will auto-disable
+        b737_fim: ""
+      },
+      OMA: {
+        b73m_amm: "https://evalspawner047.github.io/B73M-AMM//",
+        b73m_ifim: "https://evalspawner047.github.io/B73M-IFIM/",
+        b737_amm: "https://evalspawner047.github.io/B738-9-AMM/",
+        b737_fim: "https://evalspawner047.github.io/B738-9-FIM/"
+      }
+    };
+
+    function updateLinks() {
+      const selectedCust = document.getElementById("airlineSelect").value;
+      const links = airlineLinks[selectedCust];
+
+      setButton("b73m-amm", links.b73m_amm);
+      setButton("b73m-ifim", links.b73m_ifim);
+      setButton("b737-amm", links.b737_amm);
+      setButton("b737-fim", links.b737_fim);
+    }
+
+    function setButton(elementId, url) {
+      const btn = document.getElementById(elementId);
+      if (url && url.trim() !== "") {
+        btn.href = url;
+        btn.classList.remove("disabled");
+      } else {
+        btn.href = "#";
+        btn.classList.add("disabled");
+      }
+    }
+
+    // Initialize links on page load
+    updateLinks();
+  </script>
+
+</body>
+</html>
